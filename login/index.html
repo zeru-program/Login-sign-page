@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style type="text/css" media="all">
+                @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: white;
+      }
+     .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+       width: 350px;
+       height: 500px;
+       background: #5b8ee5;
+       color: black;
+       border-radius: 5px;
+       position: relative;
+       box-shadow: 5px 5px 5px rgba(0,0,0,.3);
+     }
+     
+     .con-all {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+       width: 100%;
+       height: 95%;
+       background: #5b8ee5;
+       color: white;
+       position: absolute;
+       bottom: 0;
+       border-radius: 30px 0 30px 0;
+     }
+     .con-footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        position: absolute;
+        font-family: "Poppins", Sans-Serif;
+        font-size: .8em;
+        bottom: 5%;
+     }
+     .con-input {
+        display: flex;
+        justify-content: center;
+        align-items: left;
+        flex-direction: column;
+        text-align: left;
+        color: White;
+     }
+     .con-accept {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        float: left;
+        margin-right: 30%;
+        font-size: .8em;
+        color: White ;
+     }
+     .header-title {
+       text-align: center;
+       color: White ;
+       font-weight: 800;
+       font-size: 2em;
+       position: absolute;
+       top: 5%;
+     }
+     .inputOption {
+       border: none;
+       width: 230px;
+       height: 30px;
+       font-family: "Poppins", Sans-Serif;
+       border-radius: 5px;
+       padding: 5px 10px;
+       border: 2px solid white;
+       position: relative;
+     }
+     .con-hidden-pw {
+       display: flex;
+       align-items: center;
+       max-width: 400px;
+       width: 100%;
+       position: relative;
+       gap: 0;
+       padding: 0;
+     }
+     .vis-pass {
+       width: 25px;
+       position: absolute;
+       right: 5%;
+       margin: 0;
+     }
+     .wrong-popup {
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       flex-direction: column;
+       text-align: center;
+       gap: 30px;
+       width: 300px;
+       height: 300px;
+       background: white;
+       font-weight: 800;
+       border-radius: 3px;
+       position: fixed;
+       transform: scale(1);
+       animation: scalePopup .7s ease;
+     }
+     @keyframes scalePopup {
+       from {
+       transform: scale(.7);
+       }
+       to {
+       transform: scale(1);
+       }
+     }
+     .cek-wrong {
+       display: none;
+       justify-content: center;
+       align-items: center;
+       position: fixed;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100vh;
+       backdrop-filter: blur(2px);
+     }
+     .close-popup {
+       background: #e81a1a;
+       color: white;
+       font-weight: 800;
+       padding: 10px 30px;
+       border: 0;
+       border-radius: 5px;
+     }
+     .btn-login:active {
+       transform: scale(.95);
+       background: #526fe0;
+     }
+     .btn-login {
+       background: white;
+       border: 0;
+       padding: 10px 50px;
+       border-radius: 10px;
+       font-weight: 800;
+       transition: all .4s ease;
+       box-shadow: 0 0 3px rgba(0,0,0,.4);
+     }
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="con-all">
+          
+        <label class="header-title">Login</label>
+        <div class="con-input">
+        <label class="input-label">Username</label>
+        <input type="text" id="username" class="inputOption" placeholder="type in here.." value="" />
+        <br>
+        <label class="input-label">Password</label>
+        <div class="con-hidden-pw">
+        <input type="password" id="password" class="inputOption" placeholder="type in here.."/>
+        <img src="voff.png" class="vis-pass" alt="show" onclick="switchOn()" />
+        </div>
+          
+          
+        <br>
+        <div class="con-accept">
+        <input type="checkbox" name="" id="" /> <label>I'm Accepting the police service</label>
+        </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <button class="btn-login" onclick="loginCek()">Login</button>
+        <br />
+        <br />
+          
+        <div class="con-footer">
+        <label class="footer-title">Forgot your password? <a href="/reset">Reset password</a></label>
+        <label class="footer-title">Don't have a acount? 
+<a href="/sign">Sign in</a></label>
+        </div>
+      </div>
+    </div>
+    <div class="cek-wrong">
+    <div class="wrong-popup">
+      <label>Incorrect <br>username or password!</label>
+      <button class="close-popup" onclick="closePopupWrong()">OK</button>
+    </div>
+    </div>
+<script type="text/javascript" charset="utf-8">
+ const users = [
+      { username: 'Admin', password: 'admin', redirect: '/success' },
+      { username: 'Aigo', password: 'Aiko123', redirect: '/success' },
+    ];
+    function loginCek() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      const user = users.find(u => u.username === username && u.password === password);
+
+      if (user) {
+        window.location.href = user.redirect;
+      } else {
+        const usn = document.querySelectorAll('.inputOption');
+        const popupWrong = document.querySelector('.cek-wrong');
+        usn.forEach(us => {
+          us.style.border = "2px solid red";
+        
+        });
+        popupWrong.style.display = "flex";
+      }
+    }
+    function closePopupWrong() {
+        const popupWrong = document.querySelector('.cek-wrong');
+        popupWrong.style.display = "none";
+    }
+    
+     const usn = document.querySelectorAll('.inputOption');
+        usn.forEach(us => {
+          us.onclick = function () {
+          us.style.border = "2px solid white";
+          }
+        });
+    const imgPw = document.querySelector('.vis-pass');
+    const password = document.getElementById('password');
+    var cekVis = false;
+    function switchOn() {
+      if (cekVis) {
+      imgPw.src = "von.png";
+      imgPw.style.width = "23px";
+      password.type = "text";
+      } else {
+      imgPw.src = "voff.png";
+      imgPw.style.width = "25px";
+      password.type = "password";
+      }
+      cekVis = !cekVis;
+      
+    }
+</script>
+  </body>
+</html>
