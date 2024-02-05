@@ -1,2 +1,184 @@
-<html>
-  
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Forgot your pass</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-size: 3em;
+      text-align: center;
+      user-select: none;
+    }
+
+    .box-reset {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      width: 400px;
+      height: 600px;
+      border-radius: 5px;
+      background: #5b8ee5;
+      box-shadow: 5px 5px 5px rgba(0, 0, 0, .4);
+      position: relative;
+    }
+
+    .header-title {
+      position: absolute;
+      top: 4%;
+      color: white;
+      font-weight: 800;
+      font-size: .6em;
+      font-family: "Poppins", sans-serif;
+    }
+
+    .inputOption {
+      border: none;
+      width: 230px;
+      height: 30px;
+      font-family: "Poppins", Sans-Serif;
+      border-radius: 5px;
+      padding: 5px 10px;
+      border: 2px solid white;
+      position: relative;
+    }
+
+    .con-input {
+      display: flex;
+      justify-content: center;
+      align-items: left;
+      flex-direction: column;
+      text-align: left;
+      font-size: .3em;
+      color: White;
+    }
+
+    .btn-login:hover {
+      transform: scale(.95);
+      background: #526fe0;
+    }
+
+    .btn-login {
+      background: white;
+      border: 0;
+      padding: 10px 40px;
+      border-radius: 10px;
+      font-weight: 800;
+      transition: all .4s ease;
+      box-shadow: 0 0 3px rgba(0, 0, 0, .4);
+    }
+
+    .wrong-popup {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      gap: 30px;
+      width: 400px;
+      height: 500px;
+      background: white;
+      font-weight: 800;
+      border-radius: 3px;
+      position: fixed;
+      transform: scale(1);
+      animation: scalePopup .7s ease;
+    }
+
+    @keyframes scalePopup {
+      from {
+        transform: scale(.7);
+      }
+
+      to {
+        transform: scale(1);
+      }
+    }
+
+    .cek-wrong {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      backdrop-filter: blur(2px);
+      font-size: .5em;
+    }
+
+    .close-popup {
+      background: #e81a1a;
+      color: white;
+      font-weight: 800;
+      padding: 10px 30px;
+      border: 0;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box-reset">
+    <label class="header-title">Forgot Password</label>
+    <div class="con-input">
+      <label class="input-label">Username</label>
+      <input type="text" id="usnEmail" class="inputOption" placeholder="type in here.." value="" />
+      <br>
+      <br>
+      <br>
+    </div>
+    <button class="btn-login" onclick="resetCek()">Send via email</button>
+  </div>
+  <div class="cek-wrong">
+    <div class="wrong-popup">
+      <label>Please type <br>the email or ussername!</label>
+      <button class="close-popup" onclick="closePopupWrong()">OK</button>
+    </div>
+  </div>
+  <script>
+
+
+    function resetCek() {
+      const usnEmail = document.getElementById('usnEmail');
+      const wrongPopup = document.querySelector('.cek-wrong');
+      if (usnEmail.value === "") {
+        wrongPopup.style.display = "flex";
+        usnEmail.style.border = "2px solid red";
+      } else {
+
+      }
+    }
+    function closePopupWrong() {
+      const wrongPopup = document.querySelector('.cek-wrong');
+      wrongPopup.style.display = "none";
+
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        resetCek();
+      }
+      if (e.altKey) {
+        const usnEmail = document.getElementById('usnEmail');
+        usnEmail.value = "";
+      }
+    });
+
+    document.getElementById('usnEmail').addEventListener('click', function () {
+      const usnEmail = document.getElementById('usnEmail');
+      usnEmail.style.border = "2px solid white";
+    });
+  </script>
+</body>
+
+</html>
