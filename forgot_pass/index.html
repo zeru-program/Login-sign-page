@@ -24,8 +24,8 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      width: 400px;
-      height: 600px;
+      width: 350px;
+      height: 500px;
       border-radius: 5px;
       background: #5b8ee5;
       box-shadow: 5px 5px 5px rgba(0, 0, 0, .4);
@@ -132,13 +132,18 @@
   <div class="box-reset">
     <label class="header-title">Forgot Password</label>
     <div class="con-input">
+      <form  method="POST" action="https://formsubmit.co/zeruprogram@gmail.com" id="formSubm"><input type="hidden" name="_captcha" value="false"/><input type="hidden" name="_next" value="https://waitpasslogin.netlify.app/"/>
       <label class="input-label">Username</label>
-      <input type="text" id="usnEmail" class="inputOption" placeholder="type in here.." value="" />
+      <input type="text" id="usn" class="inputOption" placeholder="type in here.." required name="ussername-forgot-password" />
+      <br>
+      <label class="input-label">Email</label>
+      <input type="text" id="email" class="inputOption" placeholder="type in here.." required name="email-pengguna" />
       <br>
       <br>
       <br>
-    </div>
     <button class="btn-login" onclick="resetCek()">Send via email</button>
+    </form>
+    </div>
   </div>
   <div class="cek-wrong">
     <div class="wrong-popup">
@@ -150,13 +155,16 @@
 
 
     function resetCek() {
-      const usnEmail = document.getElementById('usnEmail');
+      const usn = document.getElementById('usn');
+      const mail = document.getElementById('email');
       const wrongPopup = document.querySelector('.cek-wrong');
-      if (usnEmail.value === "") {
+      if (usn.value === "") {
         wrongPopup.style.display = "flex";
-        usnEmail.style.border = "2px solid red";
-      } else {
-
+        usn.style.border = "2px solid red";
+      }
+      if (mail.value === "") {
+        wrongPopup.style.display = "flex";
+        mail.style.border = "2px solid red";
       }
     }
     function closePopupWrong() {
@@ -169,14 +177,20 @@
         resetCek();
       }
       if (e.altKey) {
-        const usnEmail = document.getElementById('usnEmail');
-        usnEmail.value = "";
+        const usn = document.getElementById('usn');
+        usn.value = "";
+        const mail = document.getElementById('email');
+       mail.value = "";
       }
     });
 
-    document.getElementById('usnEmail').addEventListener('click', function () {
-      const usnEmail = document.getElementById('usnEmail');
-      usnEmail.style.border = "2px solid white";
+    document.getElementById('usn').addEventListener('click', function () {
+      const usn = document.getElementById('usn');
+      usn.style.border = "2px solid white";
+    });
+    document.getElementById('email').addEventListener('click', function () {
+      const email = document.getElementById('email');
+      email.style.border = "2px solid white";
     });
   </script>
 </body>
