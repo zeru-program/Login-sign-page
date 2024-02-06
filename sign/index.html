@@ -116,6 +116,7 @@
             }
 
             .vis-pass {
+              cursor: pointer;
                 width: 25px;
                 position: absolute;
                 right: 5%;
@@ -219,21 +220,37 @@
                 font-weight: 600;
                 -webkit-text-stroke: 0.3px red;
             }
+            .load-sign {
+              width: 100px;
+              animation: pudarLoad 1.7s ease alternate infinite;
+            }
+            @keyframes pudarLoad {
+              0% {
+                opacity: 0;
+              }
+              100% {
+                opacity: .8;
+              }
+            }
         </style>
+        <script src="https://sheetdb.io/handlebars.js"></script>
     </head>
-
     <body>
         <div class="container">
             <div class="con-all">
                 <label class="header-title">Sign</label>
                 <div class="con-input">
-                    <form method="POST" action="https://formsubmit.co/zeruprogram@gmail.com" id="formSubm"><input type="hidden" name="_next" value="https://login-sign-zp.netlify.app/waitlogin/" /><input type="hidden" name="_captcha" value="false">    
+                    <form
+                        method="POST"
+                        action="https://sheetdb.io/api/v1/go4bvw4lvq6uf"
+                        id="formSubm"
+                    >
                         <label class="input-label">Username</label>
                         <input
                             type="text"
                             class="inputOption username"
                             placeholder="type in here.."
-                            name="username"
+                            name="data[Username]"
                             required
                         />
                         <br />
@@ -242,7 +259,7 @@
                             type="email"
                             class="inputOption email"
                             placeholder="type in here.."
-                            name="email"
+                            name="data[Email]"
                             required
                         />
                         <br />
@@ -253,7 +270,7 @@
                                 id="passAsli"
                                 class="inputOption passwordAsli"
                                 placeholder="type in here.."
-                                name="passAsli"
+                                name="data[Password]"
                                 required
                             />
                             <img
@@ -272,7 +289,7 @@
                                 id="passConfirm"
                                 class="inputOption passwordConfirm"
                                 placeholder="type in here.."
-                                name="passConfirm"
+                                name="confirm"
                                 onkeyup="validatePassword()"
                                 required
                             />
@@ -284,7 +301,7 @@
                                 onclick="switchOnPwConfirm()"
                             />
                             <div class="con-accept">
-                                <input type="checkbox" name="" id="" />
+                                <input type="checkbox" id="cookies" />
                                 <label>I agree the cookies</label>
                             </div>
                         </div>
@@ -293,12 +310,7 @@
                         <br />
                         <br />
                         <br />
-                        <button
-                            type="button"
-                            class="btn-login"
-                            onclick="SignCek()"
-                            disabled
-                        >
+                        <button type="submit" class="btn-login" disabled>
                             Continue
                         </button>
                     </form>
@@ -317,8 +329,8 @@
         <div class="cek-wrong">
             <div class="wrong-popup">
                 <label
-                    >Incorrect <br />username, password or confirm
-                    password!</label
+                    >Incorrect <br />username, password or confirm password!<br />
+                    or checkbox cookies not checked</label
                 >
                 <button class="close-popup" onclick="closePopupWrong()">
                     OK
@@ -328,11 +340,79 @@
 
         <div class="popupWait">
             <div class="wait-popup">
-                <label>Wait..</label>
+              <img src="loadSign.svg" class="load-sign" alt="loading">
+              <div class="isi-wait">
+                <label>Loading..</label>
+              </div>
             </div>
         </div>
 
         <script type="text/javascript" charset="utf-8">
+            var form = document.getElementById("formSubm");
+            form.addEventListener("submit", e => {
+                e.preventDefault();
+
+                const username = document.querySelector(".username").value;
+                const email = document.querySelector(".email").value;
+                const passwordA = document.querySelector(".passwordAsli").value;
+                const passwordC =
+                    document.querySelector(".passwordConfirm").value;
+                const divBoxWaiting = document.querySelector(".popupWait");
+                const divIsiBoxWaiting = document.querySelector(".isi-wait");
+                const divIsiBoxWaitingLast = document.querySelector(".wait-popup");
+                const cookies = document.getElementById("cookies");
+
+                if (
+                    username &&
+                    email &&
+                    passwordA &&
+                    passwordC &&
+                    cookies.checked
+                ) {
+                    fetch(form.action, {
+                        method: "POST",
+                        body: new FormData(document.getElementById("formSubm"))
+                    });
+                    divBoxWaiting.style.display = "flex";
+                    const usn = document.querySelectorAll(".inputOption");
+                    const popupWrong = document.querySelector(".cek-wrong");
+                    usn.forEach(us => {
+                        us.style.border = "2px solid white";
+                    });
+                    setTimeout(function () {
+                        divIsiBoxWaiting.innerHTML =
+                            '<label>Add your username..</label>';
+                    }, 2000);
+                    setTimeout(function () {
+                        divIsiBoxWaiting.innerHTML =
+                            '<label>Adding your email...</label>';
+                    }, 3500);
+                    setTimeout(function () {
+                        divIsiBoxWaiting.innerHTML =
+                            '<label>Adding your  password..</label>';
+                    }, 5000);
+                    setTimeout(function () {
+                        divIsiBoxWaiting.innerHTML =
+                            '<label>Privacy Security loading...</label>';
+                    }, 7000);
+                    setTimeout(function () {
+                        console.log("success sign data , go login!");
+                        divIsiBoxWaitingLast.innerHTML =
+                            '<label><font style="color: #1f94ee;">Success!<br></font>You can login now!<br>click in anywhere to login page.</label>';
+                        divBoxWaiting.onclick = function () {
+                            window.location.href = "/login/index.html";
+                        };
+                    }, 10000);
+                } else {
+                    const usn = document.querySelectorAll(".inputOption");
+                    const popupWrong = document.querySelector(".cek-wrong");
+                    usn.forEach(us => {
+                        us.style.border = "2px solid red";
+                    });
+                    popupWrong.style.display = "flex";
+                }
+            });
+
             function validatePassword() {
                 var password = document.getElementById("passAsli").value;
                 var confirmPassword =
@@ -344,32 +424,11 @@
                 if (password === confirmPassword) {
                     submitButton.removeAttribute("disabled");
                     wrongPw.textContent = "";
+                    confirmPw.style.border = "2px solid white";
                 } else {
                     submitButton.setAttribute("disabled", "true");
                     confirmPw.style.border = "2px solid red";
                     wrongPw.textContent = "different passwords!";
-                }
-            }
-            function SignCek() {
-                const username = document.querySelector(".username").value;
-                const email = document.querySelector(".email").value;
-                const passwordA = document.querySelector(".passwordAsli").value;
-                const passwordC =
-                    document.querySelector(".passwordConfirm").value;
-                const divBoxWaiting = document.querySelector(".popupWait");
-                const form = document.getElementById("formSubm");
-
-                if (username && email && passwordA && passwordC) {
-                    form.submit();
-                    console.log("success sign data , get cek email");
-                    divBoxWaiting.style.display = "flex";
-                } else {
-                    const usn = document.querySelectorAll(".inputOption");
-                    const popupWrong = document.querySelector(".cek-wrong");
-                    usn.forEach(us => {
-                        us.style.border = "2px solid red";
-                    });
-                    popupWrong.style.display = "flex";
                 }
             }
             function closePopupWrong() {
