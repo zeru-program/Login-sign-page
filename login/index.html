@@ -62,6 +62,13 @@
       text-align: left;
       color: White;
     }
+    
+    form {
+      display: flex;
+      justify-content: center;
+      align-items: left;
+      flex-direction: column;
+    }
 
     .con-accept {
       display: flex;
@@ -179,6 +186,45 @@
       box-shadow: 0 0 3px rgba(0, 0, 0, .4);
     }
   </style>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script>
+        const SPREADSHEET_ID = '1f_cZOOSB8GHHdDj5ZR1ptwAQ1LSUHXv-pu0ea1KRUPo';
+        const API_KEY = 'AIzaSyBpvRFC0HNrkPqKxrIwqMsAQbQLofZJMOY';
+        
+function checkLogin(input, password) {
+        gapi.client.init({
+            'apiKey': API_KEY,
+        }).then(function () {
+            return gapi.client.request({
+                'path': `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Sheet1`,
+            });
+        }).then(function (response) {
+            const data = response.result.values;
+
+            // Mencari user berdasarkan username atau email dan password
+            const user = data.find((row) => (row[0] === input || row[1] === input) && row[2] === password);
+
+            if (user) {
+              window.location.href = "/success/index.html"
+            } else {
+                const usn = document.querySelectorAll('.inputOption');
+                const popupWrong = document.querySelector('.cek-wrong');
+                usn.forEach(us => {
+                    us.style.border = "2px solid red";
+                });
+                popupWrong.style.display = "flex";
+            }
+        }, function (reason) {
+            console.error('Error: ' + reason.result.error.message);
+        });
+    }
+        // Load Google Sheets API
+        gapi.load('client', function() {
+            gapi.client.init({
+                'apiKey': API_KEY,
+            });
+        });
+     </script>
 </head>
 
 <body>
@@ -187,12 +233,13 @@
 
       <label class="header-title">Login</label>
       <div class="con-input">
-        <label class="input-label">Username</label>
-        <input type="text" id="username" class="inputOption" placeholder="type in here.." value="" />
+        <form onsubmit="event.preventDefault(); checkLogin(input.value, password.value)">
+        <label class="input-label">Username or email</label>
+        <input type="text" id="username" class="inputOption" placeholder="type in here.." name="input" />
         <br>
         <label class="input-label">Password</label>
         <div class="con-hidden-pw">
-          <input type="password" id="password" class="inputOption" placeholder="type in here.." />
+          <input type="password" id="password" class="inputOption" placeholder="type in here.." name="password" />
           <img src="voff.png" class="vis-pass" alt="show" onclick="switchOn()" />
           <div class="con-accept">
             <input type="checkbox" name="" id="" /> <label>I agree the cookies</label>
@@ -201,11 +248,12 @@
 
 
         <br>
+      <br>
+      <br>
+      <br>
+      <button type="submit" class="btn-login">Login</button>
+      </form>
       </div>
-      <br>
-      <br>
-      <br>
-      <button class="btn-login" onclick="loginCek()">Login</button>
       <br />
       <br />
 
@@ -218,23 +266,22 @@
   </div>
   <div class="cek-wrong">
     <div class="wrong-popup">
-      <label>Incorrect <br>username or password!</label>
+      <label>Incorrect <br>username, email or password!</label>
       <button class="close-popup" onclick="closePopupWrong()">OK</button>
     </div>
   </div>
   <script type="text/javascript" charset="utf-8">
-    const users = [
+  /*  const users = [
       {username: 'Admin', password: 'admin', redirect: '/success/index.html'},
       {username: 'Aigo', password: 'Aiko123', redirect: '/success/index.html'},
     ];
     function loginCek() {
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
-      var cekCookies = true
+      const form = document.querySelector('form');
       const user = users.find(u => u.username === username && u.password === password);
-
       if (user) {
-        window.location.href = user.redirect;
+       form.submit();
       } else {
         const usn = document.querySelectorAll('.inputOption');
         const popupWrong = document.querySelector('.cek-wrong');
@@ -244,7 +291,7 @@
         });
         popupWrong.style.display = "flex";
       }
-    }
+    } */
     function closePopupWrong() {
       const popupWrong = document.querySelector('.cek-wrong');
       popupWrong.style.display = "none";
